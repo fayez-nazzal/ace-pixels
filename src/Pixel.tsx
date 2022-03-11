@@ -45,7 +45,7 @@ const Pixel = ({ x, y, color }: IPixelProps) => {
     } else if (e.buttons === 1) {
       setColor();
     } else if (e.buttons === 2) {
-      setColor();
+      eraseColor();
     }
   };
 
