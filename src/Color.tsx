@@ -1,10 +1,13 @@
+import { useContext } from "preact/hooks";
+import { paintContext } from "./paintContext";
+
 interface IColorProps {
-  paintColor: string;
   value: string;
-  onClick: (value: string) => void;
 }
 
-const Color = ({ value, onClick, paintColor }: IColorProps) => {
+const Color = ({ value }: IColorProps) => {
+  const { paintColor, setPaintColor } = useContext(paintContext);
+
   return (
     <div
       className="color"
@@ -13,7 +16,7 @@ const Color = ({ value, onClick, paintColor }: IColorProps) => {
         outline: paintColor === value ? "2px solid #fff" : "none",
       }}
       onClick={() => {
-        onClick(value);
+        setPaintColor(value);
       }}
     />
   );

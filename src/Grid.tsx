@@ -3,11 +3,7 @@ import Pixel from "./Pixel";
 
 //  a grid component that fills the screen with Pixel components
 
-interface IGridProps {
-  paintColor: string;
-}
-
-const Gird = ({ paintColor }: IGridProps) => {
+const Gird = () => {
   const ref = useRef<HTMLDivElement>(null);
 
   // array of Pixel components to render a grid
@@ -23,21 +19,13 @@ const Gird = ({ paintColor }: IGridProps) => {
 
     for (let x = 1; x < width - 1; x++) {
       for (let y = 1; y < height - 1; y++) {
-        grid.push(<Pixel x={x} y={y} color="#fff" paintColor={paintColor} />);
+        grid.push(<Pixel x={x} y={y} color="#fff" />);
       }
     }
 
     // set the grid
     setPixels(grid);
   }, []);
-
-  // when paintCOlor changes, change for all Pixel components
-  useEffect(() => {
-    pixels.forEach((pixel) => {
-      pixel.props.paintColor = paintColor;
-    });
-  }, [paintColor]);
-
   return (
     <div ref={ref} className="grid">
       {pixels}

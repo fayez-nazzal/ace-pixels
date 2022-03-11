@@ -1,22 +1,23 @@
-import { useState } from "preact/hooks";
+import { useEffect, useState, useContext } from "preact/hooks";
+import { paintContext } from "./paintContext";
 
 interface IPixelProps {
   x: number;
   y: number;
   color: string;
-  paintColor: string;
 }
 
-const Pixel = ({ x, y, color, paintColor }: IPixelProps) => {
+const Pixel = ({ x, y, color }: IPixelProps) => {
   // wether the pixel is painted or not
   const [opacity, setOpacity] = useState(0);
+  const { paintColor } = useContext(paintContext);
   const [ownColor, setOwnColor] = useState(paintColor);
 
   const setColor = () => {
-    setOwnColor(color);
+    setOwnColor(paintColor);
 
     // set the opacity
-    setOpacity(opacity === 0 ? 1 : 0);
+    setOpacity(1);
   };
 
   const eraseColor = () => {
@@ -35,23 +36,23 @@ const Pixel = ({ x, y, color, paintColor }: IPixelProps) => {
     e.preventDefault();
   };
 
-  // if mouse is over while not pressing the mouse button, set opacity to 0.18
+  // if mouse is over while not pressing the mouse button and opacity is 0, set opacity to 0.18
   // if mouse is over while pressing the mouse button, set opacity to 1
   // if mouse is over while pressing the right mouse button, set opacity to 0
   const onMouseOver = (e: any) => {
-    if (e.buttons === 0) {
+    if (e.buttons === 0 && opacity === 0) {
       setOpacity(0.18);
     } else if (e.buttons === 1) {
-      setOpacity(1);
+      setColor();
     } else if (e.buttons === 2) {
-      setOpacity(0);
+      setColor();
     }
   };
 
   // when mouse leave while opacity is 0.18, set opacity to 0
   const onMouseLeave = () => {
     if (opacity === 0.18) {
-      setOpacity(0);
+      eraseColor();
     }
   };
 
@@ -68,7 +69,7 @@ const Pixel = ({ x, y, color, paintColor }: IPixelProps) => {
         style={{
           top: `${y}rem`,
           left: `${x}rem`,
-          backgroundColor: paintColor,
+          backgroundColor: ownColor,
           opacity: opacity,
         }}
         onMouseOver={onMouseOver}

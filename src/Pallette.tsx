@@ -1,10 +1,5 @@
 import Color from "./Color";
 
-interface IPalletteProps {
-  onColorClick: (color: string) => void;
-  paintColor: string;
-}
-
 const colors = [
   "#000",
   "#D1D1D1",
@@ -20,16 +15,11 @@ const colors = [
   "#6A5495",
 ];
 
-const Pallette = ({ onColorClick, paintColor }: IPalletteProps) => {
+const Pallette = () => {
   return (
     <div className="pallette">
       {colors.map((color) => (
-        <Color
-          key={color}
-          value={color}
-          paintColor={paintColor}
-          onClick={onColorClick}
-        />
+        <Color key={color} value={color} />
       ))}
     </div>
   );
