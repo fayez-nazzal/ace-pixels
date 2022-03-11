@@ -1,9 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "preact/hooks";
 import Pixel from "./Pixel";
 
 //  a grid component that fills the screen with Pixel components
 
-const Gird = () => {
+interface IGridProps {
+  paintColor: string;
+}
+
+const Gird = ({ paintColor }: IGridProps) => {
   const ref = useRef<HTMLDivElement>(null);
 
   // array of Pixel components to render a grid
@@ -19,13 +23,20 @@ const Gird = () => {
 
     for (let x = 1; x < width - 1; x++) {
       for (let y = 1; y < height - 1; y++) {
-        grid.push(<Pixel x={x} y={y} color="#fff" />);
+        grid.push(<Pixel x={x} y={y} color="#fff" paintColor={paintColor} />);
       }
     }
 
     // set the grid
     setPixels(grid);
   }, []);
+
+  // when paintCOlor changes, change for all Pixel components
+  useEffect(() => {
+    pixels.forEach((pixel) => {
+      pixel.props.paintColor = paintColor;
+    });
+  }, [paintColor]);
 
   return (
     <div ref={ref} className="grid">
